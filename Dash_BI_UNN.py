@@ -388,7 +388,7 @@ def func(n_clicks, users_list, state_list, graph_type, start_date,
 # In[9]:
 
 
-app.run_server(port=8051, debug=True)
+app.run_server(port=8051, debug=False)
 
 
 # In[ ]:
