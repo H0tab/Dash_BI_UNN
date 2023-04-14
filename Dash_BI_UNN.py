@@ -72,6 +72,7 @@ BLOCKSIZE = 1024e5  #Выбор размера блока памяти в Dask
 #Внешка и логика дашбордов
 #Если запускаем на проде - просто юзаем Dash(__name__)
 app = Dash(__name__)  #На случай запуска в Jupyter
+server = app.server
 
 #app.css.append_css({"external_url": css_path})  #подключение внешнего css
 
