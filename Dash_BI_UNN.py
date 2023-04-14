@@ -53,11 +53,6 @@ dask_client = Client(processes=False)
 
 # In[6]:
 
-
-from activity_v1_pb2_grpc import ActivityServiceStub
-import activity_v1_pb2
-
-
 # In[7]:
 
 
