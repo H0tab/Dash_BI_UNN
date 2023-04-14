@@ -381,14 +381,14 @@ def func(n_clicks, users_list, state_list, graph_type, start_date,
         
 
 #В случае запуска не в юпитере - раскомититить:
-#if __name__ == "__main__":
-#    app.run(debug=False)
+if __name__ == "__main__":
+    app.run(debug=False)
 
 
 # In[9]:
 
 
-app.run_server(port=8051, debug=False)
+#app.run_server(port=8051, debug=False)
 
 
 # In[ ]:
