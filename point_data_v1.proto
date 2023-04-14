@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+option csharp_namespace = "Np.Engine.Api.V1";
+
+package pointdata.v1;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+
+service PointDataService {  
+  rpc GetPoints (PeriodRequest) returns (GetPointsReply);
+  rpc AddPoints(AddPointsRequest) returns (google.protobuf.Empty);
+}
+
+
+message PeriodRequest {
+	google.protobuf.Timestamp fromDate = 1;
+	google.protobuf.Timestamp toDate = 2;
+	string group = 3;
+	string class = 4;
+	repeated string kinds = 5;
+	repeated PointDataUser users = 6; 
+}
+
+message AddPointsRequest {
+	repeated PointData data = 1;
+}
+
+
+message PointData {
+	PointDataUser user = 1;
+	google.protobuf.Timestamp time = 2;
+	string group = 3;
+	string class = 4;
+	string kind = 5;
+	string source = 6;
+	string device = 7;
+	string comment = 8;
+	double value = 9;
+	google.protobuf.Int32Value count = 10;
+}
+
+message PointDataUser {
+	int32 userId = 1;
+	int32 tenantId = 2;
+}
+
+message GetPointsReply {
+	repeated PointData data = 1;
+}
