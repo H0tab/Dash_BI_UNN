@@ -1,7 +1,7 @@
 dash
 distributed
-grpc
 grpcio
+grpcio-tools
 numpy
 pandas
 plotly
