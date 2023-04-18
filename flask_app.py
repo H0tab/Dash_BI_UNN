@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[2]:
+# In[1]:
 
 
 import pandas as pd
@@ -10,7 +10,7 @@ import numpy as np
 import re
 
 
-# In[3]:
+# In[2]:
 
 
 #Для отрисовки дашбордов
@@ -24,7 +24,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 
-# In[4]:
+# In[3]:
 
 
 #Для подключения к серверу
@@ -36,7 +36,7 @@ from google.protobuf.wrappers_pb2 import StringValue
 import point_data_v1_pb2
 
 
-# In[5]:
+# In[4]:
 
 
 #Включаем Dask
@@ -45,7 +45,7 @@ from distributed import Client
 dask_client = Client(processes=False)
 
 
-# In[6]:
+# In[5]:
 
 
 #Параметры
@@ -53,7 +53,7 @@ BLOCKSIZE = 1024e5  #Выбор размера блока памяти в Dask
 #css_path = r"D:\Juputer ML\dash-demo\assets\style.css"  #сюда вписать путь до css. Локальный файл/сайт
 
 
-# In[7]:
+# In[ ]:
 
 
 #Внешка и логика дашбордов
@@ -257,7 +257,7 @@ def update_graph(n_clicks, users_list, state_list, graph_type, start_date,
         return fig
 
     #Рисуем линейный график пользователь/состояние во времени
-    elif graph_type=="line":
+    elif graph_type == "line":
         fig = go.Figure()
         for state in state_list:
             for user in users_list:
@@ -270,7 +270,7 @@ def update_graph(n_clicks, users_list, state_list, graph_type, start_date,
                                 yaxis_title_text='Параметр',
                                 template ="plotly_dark")
         return fig
-    elif graph_type=="colsync":
+    elif graph_type == "colsync":
         roll_corr_graph=pd.DataFrame()
         #Считаем скользящую корреляцию для каждого из показателей по всем пользователям
         for state in state_list: 
@@ -300,6 +300,17 @@ def update_graph(n_clicks, users_list, state_list, graph_type, start_date,
                                         xaxis_title_text='Время',
                                         yaxis_title_text='Коэффициент корреляции',
                                         template ="plotly_dark")
+        return fig
+    else:
+        fig = go.Figure()
+        fig.update_layout(showlegend=False)
+
+        #x axis
+        fig.update_xaxes(visible=False)
+
+        #y axis    
+        fig.update_yaxes(visible=False)
+        
         return fig
     
 #Скачивание CSV 
@@ -377,3 +388,7 @@ if __name__ == "__main__":
 
 
 # In[ ]:
+
+
+
+
