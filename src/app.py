@@ -13,12 +13,6 @@ import re
 # In[2]:
 
 
-#from jupyter_dash import JupyterDash  #Если используем внутри Jupyter. На проде - закомитить
-
-
-# In[3]:
-
-
 #Для отрисовки дашбордов
 import dash
 from dash import Dash, dcc, html, Input, Output, State
@@ -30,7 +24,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 
-# In[4]:
+# In[3]:
 
 
 #Для подключения к серверу
@@ -42,7 +36,7 @@ from google.protobuf.wrappers_pb2 import StringValue
 import point_data_v1_pb2
 
 
-# In[5]:
+# In[4]:
 
 
 #Включаем Dask
@@ -51,9 +45,7 @@ from distributed import Client
 dask_client = Client(processes=False)
 
 
-# In[6]:
-
-# In[7]:
+# In[5]:
 
 
 #Параметры
@@ -61,13 +53,12 @@ BLOCKSIZE = 1024e5  #Выбор размера блока памяти в Dask
 #css_path = r"D:\Juputer ML\dash-demo\assets\style.css"  #сюда вписать путь до css. Локальный файл/сайт
 
 
-# In[8]:
+# In[ ]:
 
 
 #Внешка и логика дашбордов
 #Если запускаем на проде - просто юзаем Dash(__name__)
-app = Dash(__name__)  #На случай запуска в Jupyter
-server = app.server
+app = Dash(__name__)
 
 #app.css.append_css({"external_url": css_path})  #подключение внешнего css
 
@@ -119,7 +110,7 @@ app.layout = html.Div(children=[
                 html.P(children=
                   "Выберите класс выбранных состояний. Может быть только 1 класс на 1 выгрузку"
                   ),
-                dcc.RadioItems(['eeg', 'wave', 'mental','skin'], 'mental', inline=True, id="RadioClassInput"),
+                dcc.RadioItems(['eeg', 'wave', 'mental','skin','qrs'], 'mental', inline=True, id="RadioClassInput"),
                 #Выбор типа графика
                 html.P(children="Выберите тип графика для отображения  "),
                 dcc.Dropdown(id='GraphTypeSelectorGRPC',
@@ -245,7 +236,7 @@ def update_graph(n_clicks, users_list, state_list, graph_type, start_date,
         df_user["user_id"] = user
         wide_df = pd.concat([wide_df, df_user], ignore_index=False)
     #Удаляем строчки с нулями
-    wide_df = wide_df[~wide_df.eq(0).any(1)]
+    wide_df= wide_df[(wide_df != 0).all(axis=1)]
     
     #Рисуем гистограмму пользователь/состояние
     if graph_type == "hist":
@@ -266,7 +257,7 @@ def update_graph(n_clicks, users_list, state_list, graph_type, start_date,
         return fig
 
     #Рисуем линейный график пользователь/состояние во времени
-    elif graph_type=="line":
+    elif graph_type == "line":
         fig = go.Figure()
         for state in state_list:
             for user in users_list:
@@ -279,7 +270,7 @@ def update_graph(n_clicks, users_list, state_list, graph_type, start_date,
                                 yaxis_title_text='Параметр',
                                 template ="plotly_dark")
         return fig
-    elif graph_type=="colsync":
+    elif graph_type == "colsync":
         roll_corr_graph=pd.DataFrame()
         #Считаем скользящую корреляцию для каждого из показателей по всем пользователям
         for state in state_list: 
@@ -309,6 +300,17 @@ def update_graph(n_clicks, users_list, state_list, graph_type, start_date,
                                         xaxis_title_text='Время',
                                         yaxis_title_text='Коэффициент корреляции',
                                         template ="plotly_dark")
+        return fig
+    else:
+        fig = go.Figure()
+        fig.update_layout(showlegend=False)
+
+        #x axis
+        fig.update_xaxes(visible=False)
+
+        #y axis    
+        fig.update_yaxes(visible=False)
+        
         return fig
     
 #Скачивание CSV 
@@ -375,7 +377,7 @@ def func(n_clicks, users_list, state_list, graph_type, start_date,
             df_user["user_id"] = user
             wide_df = pd.concat([wide_df, df_user], ignore_index=False)
         #Удаляем строчки с нулями
-        wide_df = wide_df[~wide_df.eq(0).any(1)]
+        wwide_df= wide_df[(wide_df != 0).all(axis=1)]
             
         return dcc.send_data_frame(wide_df.to_csv, f"DF_{class_type}_{start_date}_{end_date}.csv")
         
@@ -384,10 +386,6 @@ def func(n_clicks, users_list, state_list, graph_type, start_date,
 if __name__ == "__main__":
     app.run(debug=False)
 
-
-# In[9]:
-
-#app.run_server(debug=False)
 
 # In[ ]:
 
