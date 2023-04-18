@@ -236,7 +236,7 @@ def update_graph(n_clicks, users_list, state_list, graph_type, start_date,
         df_user["user_id"] = user
         wide_df = pd.concat([wide_df, df_user], ignore_index=False)
     #Удаляем строчки с нулями
-    wide_df = wide_df[~wide_df.eq(0).any(1)]
+    wide_df= wide_df[(wide_df != 0).all(axis=1)]
     
     #Рисуем гистограмму пользователь/состояние
     if graph_type == "hist":
@@ -377,7 +377,7 @@ def func(n_clicks, users_list, state_list, graph_type, start_date,
             df_user["user_id"] = user
             wide_df = pd.concat([wide_df, df_user], ignore_index=False)
         #Удаляем строчки с нулями
-        wide_df = wide_df[~wide_df.eq(0).any(1)]
+        wwide_df= wide_df[(wide_df != 0).all(axis=1)]
             
         return dcc.send_data_frame(wide_df.to_csv, f"DF_{class_type}_{start_date}_{end_date}.csv")
         
