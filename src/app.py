@@ -55,6 +55,8 @@ BLOCKSIZE = 1024e5  #Выбор размера блока памяти в Dask
 
 # In[ ]:
 
+import os
+os.system('cmd /k "python -m grpc_tools.protoc -I./ --python_out=. --grpc_python_out=. point_data_v1.proto"')
 
 #Внешка и логика дашбордов
 #Если запускаем на проде - просто юзаем Dash(__name__)
