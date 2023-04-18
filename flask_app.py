@@ -1,19 +1,13 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[2]:
 
 
 import pandas as pd
 import datetime
 import numpy as np
 import re
-
-
-# In[2]:
-
-
-#from jupyter_dash import JupyterDash  #Если используем внутри Jupyter. На проде - закомитить
 
 
 # In[3]:
@@ -53,21 +47,18 @@ dask_client = Client(processes=False)
 
 # In[6]:
 
-# In[7]:
-
 
 #Параметры
 BLOCKSIZE = 1024e5  #Выбор размера блока памяти в Dask
 #css_path = r"D:\Juputer ML\dash-demo\assets\style.css"  #сюда вписать путь до css. Локальный файл/сайт
 
 
-# In[8]:
+# In[7]:
 
 
 #Внешка и логика дашбордов
 #Если запускаем на проде - просто юзаем Dash(__name__)
-app = Dash(__name__)  #На случай запуска в Jupyter
-server = app.server
+app = Dash(__name__)
 
 #app.css.append_css({"external_url": css_path})  #подключение внешнего css
 
@@ -119,7 +110,7 @@ app.layout = html.Div(children=[
                 html.P(children=
                   "Выберите класс выбранных состояний. Может быть только 1 класс на 1 выгрузку"
                   ),
-                dcc.RadioItems(['eeg', 'wave', 'mental','skin'], 'mental', inline=True, id="RadioClassInput"),
+                dcc.RadioItems(['eeg', 'wave', 'mental','skin','qrs'], 'mental', inline=True, id="RadioClassInput"),
                 #Выбор типа графика
                 html.P(children="Выберите тип графика для отображения  "),
                 dcc.Dropdown(id='GraphTypeSelectorGRPC',
@@ -385,12 +376,4 @@ if __name__ == "__main__":
     app.run(debug=False)
 
 
-# In[9]:
-
-#app.run_server(debug=False)
-
 # In[ ]:
-
-
-
-
